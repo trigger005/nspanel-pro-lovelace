@@ -1,0 +1,1928 @@
+swipe_nav:
+  wrap: false
+  animate: swipe
+  prevent_default: true
+  swipe_amount: 30
+view_timeout:
+  timeout: true
+  default: home
+  duration: 30000
+views:
+  - title: Home
+    icon: mdi:home
+    path: home
+    badges: []
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: weather-forecast
+                entity: weather.home
+                show_current: true
+                show_forecast: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-left: 10px;
+                      color: #FFFFFF;
+                      border: none;
+                      background: none;
+                      --ha-card-box-shadow: none;
+                      --ha-card-background: none;
+                      --ha-card-spacing: 0px;
+                      --ha-card-padding: 0px;
+                    }
+                    ha-card .name-state{
+                        display: none;
+                    }
+                    ha-card .attribute{
+                      display: none;
+                    }
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-chips-card
+                style: |
+                  ha-card {
+                    margin-left: 20px;
+                    --chip-spacing: 10px;
+                    --chip-font-size: 25px;
+                    --primary-text-color: white;
+                  }
+                chips:
+                  - type: template
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-background: none;
+                          --chip-font-weight: normal;
+                          --chip-icon-size: 45px;
+                          border: none;
+                        }
+                    entity: sensor.lumi_lumi_weather_temperature
+                    icon: mdi:home-thermometer
+                    icon_color: >-
+                      {% if states['sensor.lumi_lumi_weather_temperature'].state
+                      | int < 22 %} blue {% elif
+                      states['sensor.lumi_lumi_weather_temperature'].state | int
+                      >= 22 %} orange {% else %}
+                        red
+                      {% endif %}
+                    content: >-
+                      {{states['sensor.lumi_lumi_weather_temperature'].state}}
+                      °C
+                  - type: entity
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-background: none;
+                          --chip-font-weight: normal;
+                          --chip-icon-size: 45px;
+                          border: none!important;
+                        }
+                    entity: sensor.lumi_lumi_weather_humidity
+                    use_entity_picture: false
+                    icon_color: blue
+          - type: horizontal-stack
+            cards:
+              - type: custom:digital-clock
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: #FFFFFF;
+                      border: none;
+                      background: none;
+                      margin: 10px 0 10px 20px;
+                      text-align: left!important;
+                      --ha-card-box-shadow: none;
+                      --ha-card-background: none;
+                      --ha-card-spacing: 0px;
+                      --ha-card-padding: 0px;
+                    }
+                    ha-card .first-line {
+                      font-size: 120px!important;
+                    }
+                    ha-card .second-line {
+                      font-size: 25px!important;
+                      margin-left: 25px;
+                      font-weight: normal;
+                    }
+                dateFormat:
+                  weekday: short
+                  day: 2-digit
+                  month: short
+                timeFormat:
+                  hour: 2-digit
+                  minute: 2-digit
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                show_name: false
+                show_state: true
+                icon: mdi:sun-snowflake-variant
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/climate
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-left: 30px!important;
+                      margin-right: 30px!important;
+                      border: none;
+                      background: #1C1C1C55!important;
+                      border-radius: 15px!important;
+                    }
+                state:
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'cool' ]]]
+                    styles:
+                      icon:
+                        - color: '#1565C0'
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'heat' ]]]
+                    styles:
+                      icon:
+                        - color: '#F57C00'
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.bedroom'].state === 'fan_only'
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#0097A7'
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'dry' ]]]
+                    styles:
+                      icon:
+                        - color: '#AFB42B'
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.bedroom'].state === 'heat_cool'
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#689F38'
+                  - operator: template
+                    value: >
+                      [[[ return
+                      states['climate.bedroom_underfloor_heating'].attributes.hvac_action
+                      === 'heating' ]]]
+                    styles:
+                      icon:
+                        - color: '#E64A19'
+                styles:
+                  card:
+                    - padding: 10px
+                    - width: 180px
+                    - height: 100px
+                    - margin-left: 15px
+                    - margin-top: 10px
+                  icon:
+                    - width: 45px
+                    - height: 45px
+                    - color: '#FFFFFF'
+              - type: custom:button-card
+                show_name: false
+                show_state: true
+                icon: mdi:lightbulb-group
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/lights
+                state:
+                  - operator: template
+                    value: |
+                      [[[ 
+                          if(
+                              states['light.hallway_lights'].state === 'on' ||
+                              states['switch.shellyswitch25_483fda8d15e3_channel_2'].state
+                      === 'on' ||
+                              states['light.stairs_lights'].state === 'on'  ||
+                              states['light.kitchen_lights'].state === 'on' ||
+                              states['light.living_room_led_strip_1'].state === 'on' ||
+                              states['light.living_room_led_strip_2'].state === 'on' ||
+                              states['light.pergola_light_relay'].state === 'on'
+                               ) 
+                            return true;
+                          else 
+                            return false;
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#FBC02D'
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-left: 20px!important;
+                      margin-right: 30px!important;
+                      border: none;
+                      background: #1C1C1C55!important;
+                      border-radius: 15px!important;
+                    }
+                styles:
+                  card:
+                    - padding: 10px
+                    - width: 180px
+                    - height: 100px
+                    - margin-top: 10px
+                  icon:
+                    - width: 45px
+                    - height: 45px
+                    - color: '#FFFFFF'
+        card_mod:
+          style: |
+            ha-card {
+              margin-top: -6px;
+              margin-left: -6px;
+              padding-top: 15px;
+              border: none;
+              border-radius: 0;
+              width: 474px;
+              height: 472px;
+              background-color: #000000;
+              background-image: url("/local/images/control-panel-wallpaper-4.jpg");
+            }
+  - icon: mdi:view-dashboard-outline
+    subview: false
+    path: dashboard
+    badges: []
+    cards:
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: grid
+            cards:
+              - type: custom:button-card
+                icon: mdi:sun-snowflake-variant
+                name: Climate
+                show_state: false
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/climate
+                state:
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'cool' ]]]
+                    styles:
+                      icon:
+                        - color: '#455DDC'
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'heat' ]]]
+                    styles:
+                      icon:
+                        - color: '#FF862E'
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.bedroom'].state === 'fan_only'
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#9646EF'
+                  - operator: template
+                    value: |
+                      [[[ return states['climate.bedroom'].state === 'dry' ]]]
+                    styles:
+                      icon:
+                        - color: '#43D1A7'
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.bedroom'].state === 'heat_cool'
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#43D1A7'
+                  - operator: template
+                    value: >
+                      [[[ return
+                      states['climate.bedroom_underfloor_heating'].attributes.hvac_action
+                      === 'heating' ]]]
+                    styles:
+                      icon:
+                        - color: '#FF862E'
+                styles:
+                  card:
+                    - font-family: Poppins
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 5px
+                    - border-radius: 15px
+                    - border-width: 0px
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: center
+                  icon:
+                    - color: '#727C94'
+                    - width: 70px;
+                    - height: 70px;
+                  name:
+                    - color: '#A0A9C0'
+                    - font-size: 16px
+                    - padding-bottom: 10px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+              - type: custom:button-card
+                icon: mdi:lightbulb-group
+                name: Lights
+                show_state: false
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/lights
+                state:
+                  - operator: template
+                    value: |
+                      [[[ 
+                          if(
+                              states['light.hallway_lights'].state === 'on' ||
+                              states['switch.shellyswitch25_483fda8d15e3_channel_2'].state
+                      === 'on' ||
+                              states['light.stairs_lights'].state === 'on'  ||
+                              states['light.kitchen_lights'].state === 'on' ||
+                              states['light.living_room_led_strip_1'].state === 'on' ||
+                              states['light.living_room_led_strip_2'].state === 'on' ||
+                              states['light.pergola_light_relay'].state === 'on'
+                               ) 
+                            return true;
+                          else 
+                            return false;
+                      ]]]
+                    styles:
+                      icon:
+                        - color: '#FF862E'
+                styles:
+                  card:
+                    - font-family: Poppins
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 5px
+                    - border-radius: 15px
+                    - border-width: 0px
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: center
+                  icon:
+                    - color: '#727C94'
+                    - width: 70px;
+                    - height: 70px;
+                  name:
+                    - color: '#A0A9C0'
+                    - font-size: 16px
+                    - padding-bottom: 10px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+              - type: custom:button-card
+                icon: mdi:cctv
+                name: Cameras
+                show_state: false
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/cctv
+                styles:
+                  card:
+                    - font-family: Poppins
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 5px
+                    - border-radius: 15px
+                    - border-width: 0px
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: center
+                  icon:
+                    - color: '#455DDC'
+                    - width: 70px;
+                    - height: 70px;
+                  name:
+                    - color: '#A0A9C0'
+                    - font-size: 16px
+                    - padding-bottom: 10px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+              - type: custom:button-card
+                icon: mdi:solar-power-variant
+                entity: sensor.inverter_active_power
+                show_state: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/energy
+                name: PV
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#43D1A7'
+                    - width: 50px;
+                    - height: 50px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+              - type: custom:button-card
+                entity: lock.front_door
+                icon: mdi:home-lock-open
+                name: Door
+                show_state: true
+                state:
+                  - operator: template
+                    value: |
+                      [[[ 
+                          if(states['lock.front_door'].state === 'locked') 
+                            return true;
+                          else 
+                            return false;
+                      ]]]
+                    styles:
+                      icon:
+                        - icon: mdi:home-lock
+                        - color: '#43D1A7'
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#F73463'
+                    - width: 50px;
+                    - height: 50px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+              - type: custom:button-card
+                icon: mdi:home-thermometer
+                entity: sensor.lumi_lumi_weather_temperature
+                show_state: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/weather
+                name: >
+                  [[[ return states['sensor.lumi_lumi_weather_humidity'].state +
+                  "%" ]]]
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631EE'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#FF862E'
+                    - width: 50px;
+                    - height: 50px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px!important;
+                    }
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 0px;
+              border: none;
+              background: #000000;
+              background-image: url("/local/images/control-panel-wallpaper-4.jpg");
+              background-repeat: no-repeat;
+              background-size: cover;
+              padding: 85px 10px 85px 15px;
+            }
+  - subview: true
+    icon: mdi:sun-snowflake-variant
+    path: climate
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-chips-card
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-background: none;
+                          --chip-border-width: 0px;
+                          --chip-font-size: 16px;
+                          --chip-spacing: 10px
+                        }
+                    chips:
+                      - type: template
+                        tap_action:
+                          action: navigate
+                          navigation_path: /dashboard-playground/dashboard
+                        icon: mdi:menu
+                      - type: template
+                        content: Climate
+          - type: conditional
+            conditions:
+              - entity: input_boolean.summer_mode
+                state: 'on'
+            card:
+              features:
+                - type: climate-hvac-modes
+                  hvac_modes:
+                    - fan_only
+                    - dry
+                    - cool
+                    - heat
+                    - heat_cool
+                    - 'off'
+                - type: target-temperature
+              type: tile
+              entity: climate.office
+              vertical: true
+              icon: mdi:air-conditioner
+          - type: conditional
+            conditions:
+              - entity: input_boolean.summer_mode
+                state: 'off'
+            card:
+              features:
+                - type: climate-hvac-modes
+                  hvac_modes:
+                    - heat
+                    - 'off'
+                - type: climate-preset-modes
+                  style: dropdown
+                  preset_modes:
+                    - none
+                    - away
+                - type: target-temperature
+              type: tile
+              entity: climate.bedroom_underfloor_heating
+              icon: mdi:radiator
+              vertical: true
+              show_entity_picture: true
+  - icon: mdi:lightbulb-group
+    path: lights
+    subview: true
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+                icon: mdi:chevron-left
+              - type: template
+                content: Lights
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+            card_mod:
+              style: |
+                ha-card {
+                  --chip-background: none;
+                  --chip-border-width: 0px;
+                  --chip-font-size: 24px;
+                  --chip-icon-size: 50px;
+                  padding: 0px;
+                  margin-bottom: 40px;
+                  margin-top: 5px;
+                  margin-left: -20px;
+                  font-family: Poppins;
+                }
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:swipe-card
+                parameters:
+                  effect: coverflow
+                  grabCursor: true
+                  centeredSlides: true
+                  slidesPerView: auto
+                  coverflowEffect:
+                    modifier: 1
+                    slideShadows: true
+                  pagination:
+                    type: bullets
+                cards:
+                  - type: grid
+                    cards:
+                      - type: custom:button-card
+                        entity: light.hallway_lights
+                        name: Hallway
+                        icon: mdi:light-recessed
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return states['light.hallway_lights'].state
+                              === 'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                      - type: custom:button-card
+                        entity: switch.shellyswitch25_483fda8d15e3_channel_2
+                        name: Front Door
+                        icon: phu:recessed-ceiling
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return
+                              states['switch.shellyswitch25_483fda8d15e3_channel_2'].state
+                              === 'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                      - type: custom:button-card
+                        entity: light.stairs_lights
+                        name: Stairs
+                        icon: mdi:stairs
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return states['light.stairs_lights'].state ===
+                              'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                      - type: custom:button-card
+                        entity: light.upstairs_hallway_mood_led_strip
+                        name: Upstairs
+                        icon: phu:light-strip
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return
+                              states['light.upstairs_hallway_mood_led_strip'].state
+                              === 'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                      - type: custom:button-card
+                        entity: light.kitchen_lights
+                        name: Kitchen
+                        icon: mdi:light-recessed
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return states['light.kitchen_lights'].state
+                              === 'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                      - type: custom:button-card
+                        entity: >-
+                          light.gledopto_gl_c_007p_277645fe_level_light_color_on_off
+                        name: Kitchen Counter
+                        icon: phu:light-strip
+                        show_state: true
+                        state:
+                          - operator: template
+                            value: >
+                              [[[ return
+                              states['light.gledopto_gl_c_007p_277645fe_level_light_color_on_off'].state
+                              === 'on' ]]]
+                            styles:
+                              icon:
+                                - color: '#FF862E'
+                        styles:
+                          card:
+                            - width: 140px
+                            - height: 140px
+                            - background: '#222631EE'
+                            - padding: 15px
+                            - border-radius: 15px
+                            - border-width: 0px
+                            - font-family: Poppins
+                          grid:
+                            - grid-template-areas: '"i" "s" "n"'
+                            - grid-template-columns: 1fr
+                            - grid-template-rows: 1fr min-content min-content
+                          img_cell:
+                            - place-content: start
+                          icon:
+                            - color: '#727C94'
+                            - width: 50px;
+                            - height: 50px;
+                          name:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          label:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - color: '#A0A9C0'
+                          state:
+                            - justify-self: start
+                            - padding-left: 5px
+                            - font-weight: bold
+                            - color: '#FFFFFF'
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                  - type: horizontal-stack
+                    cards:
+                      - type: grid
+                        cards:
+                          - type: custom:button-card
+                            entity: >-
+                              light.rgb_mood_light_79d9e4a1_level_light_color_on_off
+                            name: Living Mood
+                            icon: phu:light-strip
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.rgb_mood_light_79d9e4a1_level_light_color_on_off'].state
+                                  === 'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.living_room_led_strip_1
+                            name: Living Led 1
+                            icon: phu:light-strip
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.living_room_led_strip_1'].state
+                                  === 'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.living_room_led_strip_2
+                            name: Living Led 2
+                            icon: phu:light-strip
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.living_room_led_strip_2'].state
+                                  === 'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.shellyrgbw2_e74768
+                            name: Bed
+                            icon: phu:light-strip
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.shellyrgbw2_e74768'].state ===
+                                  'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.pergola_light_relay
+                            name: Pergola
+                            icon: phu:light-string
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.pergola_light_relay'].state ===
+                                  'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.garden_spot_lights_zha_group_0x0008
+                            name: Spotlights
+                            icon: phu:bulb-flood
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.garden_spot_lights_zha_group_0x0008'].state
+                                  === 'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                  - type: horizontal-stack
+                    cards:
+                      - type: grid
+                        cards:
+                          - type: custom:button-card
+                            entity: light.shellyrgbw2_d8872d
+                            name: Bench
+                            icon: phu:light-strip
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.shellyrgbw2_d8872d'].state ===
+                                  'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.terrace_string_lights_switch
+                            name: Terrace
+                            icon: phu:light-string
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.terrace_string_lights_switch'].state
+                                  === 'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+                          - type: custom:button-card
+                            entity: light.floodlight_1_light
+                            name: Flood
+                            icon: phu:bulb-flood
+                            show_state: true
+                            state:
+                              - operator: template
+                                value: >
+                                  [[[ return
+                                  states['light.floodlight_1_light'].state ===
+                                  'on' ]]]
+                                styles:
+                                  icon:
+                                    - color: '#FF862E'
+                            styles:
+                              card:
+                                - width: 140px
+                                - height: 140px
+                                - background: '#222631EE'
+                                - padding: 15px
+                                - border-radius: 15px
+                                - border-width: 0px
+                                - font-family: Poppins
+                              grid:
+                                - grid-template-areas: '"i" "s" "n"'
+                                - grid-template-columns: 1fr
+                                - grid-template-rows: 1fr min-content min-content
+                              img_cell:
+                                - place-content: start
+                              icon:
+                                - color: '#727C94'
+                                - width: 50px;
+                                - height: 50px;
+                              name:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              label:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - color: '#A0A9C0'
+                              state:
+                                - justify-self: start
+                                - padding-left: 5px
+                                - font-weight: bold
+                                - color: '#FFFFFF'
+                                - margin-top: 10px
+                                - margin-bottom: 5px
+            card_mod:
+              style:
+                swipe-card:
+                  .: |
+                    ha-card {
+                      background: none;
+                      border-width: 0px;
+                    }
+                  $: |
+                    .swiper-container{
+                      padding-bottom: 40px!important;
+                      background: none;
+                    }
+                    .swiper-pagination-bullet {
+                      background: #727C94!important;
+                    }
+                    .swiper-pagination-bullet-active {
+                      background: #455DDC!important;
+                    }
+  - path: ac
+    icon: mdi:air-conditioner
+    subview: true
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-chips-card
+                    chips:
+                      - type: template
+                        tap_action:
+                          action: navigate
+                          navigation_path: /dashboard-playground/dashboard
+                        icon: mdi:menu
+                      - type: template
+                        content: A/C
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-background: none;
+                          --chip-border-width: 0px;
+                          --chip-font-size: 16px;
+                          --chip-spacing: 10px
+                        }
+          - features:
+              - type: climate-hvac-modes
+                hvac_modes:
+                  - fan_only
+                  - dry
+                  - cool
+                  - heat
+                  - heat_cool
+                  - 'off'
+              - type: target-temperature
+            type: tile
+            entity: climate.office
+            vertical: true
+            icon: mdi:air-conditioner
+  - icon: mdi:radiator
+    path: heating
+    subview: true
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+                icon: mdi:menu
+              - type: template
+                content: Heating
+            card_mod:
+              style: |
+                ha-card {
+                  --chip-background: none;
+                  --chip-border-width: 0px;
+                  --chip-font-size: 16px;
+                  --chip-spacing: 10px
+                }
+          - features:
+              - type: climate-hvac-modes
+                hvac_modes:
+                  - heat
+                  - 'off'
+              - type: target-temperature
+            type: tile
+            entity: climate.bedroom_underfloor_heating
+            icon: mdi:radiator
+            vertical: true
+            show_entity_picture: true
+  - path: cctv
+    subview: true
+    icon: mdi:cctv
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+                icon: mdi:chevron-left
+              - type: template
+                content: CCTV
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+            card_mod:
+              style: |
+                ha-card {
+                  --chip-background: none;
+                  --chip-border-width: 0px;
+                  --chip-font-size: 24px;
+                  --chip-icon-size: 50px;
+                  padding: 0px;
+                  margin-bottom: 40px;
+                  margin-top: 5px;
+                  margin-left: -20px;
+                  font-family: Poppins;
+                }
+          - show_state: false
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            image: https://demo.home-assistant.io/stub_config/bedroom.png
+            camera_image: camera.front
+            entity: camera.front_2
+          - show_state: false
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            image: https://demo.home-assistant.io/stub_config/bedroom.png
+            camera_image: camera.front
+            entity: camera.side_2
+          - show_state: false
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            image: https://demo.home-assistant.io/stub_config/bedroom.png
+            camera_image: camera.front
+            entity: camera.back_2
+  - path: weather
+    icon: mdi:weather-partly-cloudy
+    subview: true
+    badges: []
+    cards:
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: template
+                    tap_action:
+                      action: navigate
+                      navigation_path: /dashboard-playground/dashboard
+                    icon: mdi:chevron-left
+                  - type: template
+                    content: Weather
+                    tap_action:
+                      action: navigate
+                      navigation_path: /dashboard-playground/dashboard
+                card_mod:
+                  style: |
+                    ha-card {
+                      --chip-background: none;
+                      --chip-border-width: 0px;
+                      --chip-font-size: 24px;
+                      --chip-icon-size: 50px;
+                      padding: 0px;
+                      margin-bottom: 40px;
+                      margin-top: 5px;
+                      margin-left: -20px;
+                      font-family: Poppins;
+                    }
+              - square: true
+                type: grid
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.outdoor_temperature
+                    icon: mdi:thermometer
+                    name: Outdoor
+                    show_state: true
+                    styles:
+                      card:
+                        - width: 140px
+                        - height: 140px
+                        - background: '#222631'
+                        - padding: 15px
+                        - border-radius: 15px
+                        - border-width: 0px
+                        - font-family: Poppins
+                      grid:
+                        - grid-template-areas: '"i" "s" "n"'
+                        - grid-template-columns: 1fr
+                        - grid-template-rows: 1fr min-content min-content
+                      img_cell:
+                        - place-content: start
+                      icon:
+                        - color: '#43D1A7'
+                        - width: 30px;
+                        - height: 30px;
+                      name:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - color: '#A0A9C0'
+                      state:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - font-weight: bold
+                        - color: '#FFFFFF'
+                        - margin-top: 10px
+                        - margin-bottom: 5px
+                  - type: custom:button-card
+                    entity: sensor.outdoor_humidity
+                    icon: mdi:water-percent
+                    name: Outdoor
+                    show_state: true
+                    styles:
+                      card:
+                        - width: 140px
+                        - height: 140px
+                        - background: '#222631'
+                        - padding: 15px
+                        - border-radius: 15px
+                        - border-width: 0px
+                        - font-family: Poppins
+                      grid:
+                        - grid-template-areas: '"i" "s" "n"'
+                        - grid-template-columns: 1fr
+                        - grid-template-rows: 1fr min-content min-content
+                      img_cell:
+                        - place-content: start
+                      icon:
+                        - color: '#455DDC'
+                        - width: 30px;
+                        - height: 30px;
+                      name:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - color: '#A0A9C0'
+                      state:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - font-weight: bold
+                        - color: '#FFFFFF'
+                        - margin-top: 10px
+                        - margin-bottom: 5px
+                        - margin-bottom: 10px
+                  - type: custom:button-card
+                    entity: sensor.rainfall
+                    icon: mdi:weather-rainy
+                    name: Rain
+                    show_state: true
+                    styles:
+                      card:
+                        - width: 140px
+                        - height: 140px
+                        - background: '#222631'
+                        - padding: 15px
+                        - border-radius: 15px
+                        - border-width: 0px
+                        - font-family: Poppins
+                      grid:
+                        - grid-template-areas: '"i" "s" "n"'
+                        - grid-template-columns: 1fr
+                        - grid-template-rows: 1fr min-content min-content
+                      img_cell:
+                        - place-content: start
+                      icon:
+                        - color: '#9646EF'
+                        - width: 30px;
+                        - height: 30px;
+                      name:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - color: '#A0A9C0'
+                      state:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - font-weight: bold
+                        - color: '#FFFFFF'
+                        - margin-top: 10px
+                        - margin-bottom: 5px
+                  - type: custom:button-card
+                    entity: sensor.lumi_lumi_weather_temperature
+                    icon: mdi:home-thermometer
+                    name: Indoor
+                    show_state: true
+                    styles:
+                      card:
+                        - width: 140px
+                        - height: 140px
+                        - background: '#222631'
+                        - padding: 15px
+                        - border-radius: 15px
+                        - border-width: 0px
+                        - font-family: Poppins
+                      grid:
+                        - grid-template-areas: '"i" "s" "n"'
+                        - grid-template-columns: 1fr
+                        - grid-template-rows: 1fr min-content min-content
+                      img_cell:
+                        - place-content: start
+                      icon:
+                        - color: '#43D1A7'
+                        - width: 30px;
+                        - height: 30px;
+                      name:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - color: '#A0A9C0'
+                      state:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - font-weight: bold
+                        - color: '#FFFFFF'
+                        - margin-top: 10px
+                        - margin-bottom: 5px
+                  - type: custom:button-card
+                    entity: sensor.lumi_lumi_weather_temperature
+                    icon: mdi:water-percent
+                    name: Indoor
+                    show_state: true
+                    styles:
+                      card:
+                        - width: 140px
+                        - height: 140px
+                        - background: '#222631'
+                        - padding: 15px
+                        - border-radius: 15px
+                        - border-width: 0px
+                        - font-family: Poppins
+                      grid:
+                        - grid-template-areas: '"i" "s" "n"'
+                        - grid-template-columns: 1fr
+                        - grid-template-rows: 1fr min-content min-content
+                      img_cell:
+                        - place-content: start
+                      icon:
+                        - color: '#455DDC'
+                        - width: 30px;
+                        - height: 30px;
+                      name:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - color: '#A0A9C0'
+                      state:
+                        - justify-self: start
+                        - padding-left: 5px
+                        - font-weight: bold
+                        - color: '#FFFFFF'
+                        - margin-top: 10px
+                        - margin-bottom: 5px
+                columns: 3
+        card_mod:
+          style: |
+            ha-card {
+              background: none;
+              min-height: 450px;
+              border: none;
+            }
+  - subview: true
+    path: energy
+    icon: mdi:solar-power-variant
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+                icon: mdi:chevron-left
+              - type: template
+                content: Energy
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+            card_mod:
+              style: |
+                ha-card {
+                  --chip-background: none;
+                  --chip-border-width: 0px;
+                  --chip-font-size: 24px;
+                  --chip-icon-size: 50px;
+                  padding: 0px;
+                  margin-bottom: 40px;
+                  margin-top: 5px;
+                  margin-left: -20px;
+                  font-family: Poppins;
+                }
+          - square: true
+            type: grid
+            cards:
+              - type: custom:button-card
+                entity: sensor.power_from_grid
+                icon: mdi:home-import-outline
+                name: From grid
+                show_state: true
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#FF862E'
+                    - width: 30px;
+                    - height: 30px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+              - type: custom:button-card
+                entity: sensor.power_to_grid
+                icon: mdi:home-export-outline
+                name: To grid
+                show_state: true
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#43D1A7'
+                    - width: 30px;
+                    - height: 30px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+              - type: custom:button-card
+                entity: sensor.inverter_active_power
+                icon: mdi:lightning-bolt-circle
+                name: PV
+                show_state: true
+                styles:
+                  card:
+                    - width: 140px
+                    - height: 140px
+                    - background: '#222631'
+                    - padding: 15px
+                    - border-radius: 15px
+                    - border-width: 0px
+                    - font-family: Poppins
+                  grid:
+                    - grid-template-areas: '"i" "s" "n"'
+                    - grid-template-columns: 1fr
+                    - grid-template-rows: 1fr min-content min-content
+                  img_cell:
+                    - place-content: start
+                  icon:
+                    - color: '#43D1A7'
+                    - width: 30px;
+                    - height: 30px;
+                  name:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - color: '#A0A9C0'
+                  state:
+                    - justify-self: start
+                    - padding-left: 5px
+                    - font-weight: bold
+                    - color: '#FFFFFF'
+                    - margin-top: 10px
+                    - margin-bottom: 5px
+            columns: 3
