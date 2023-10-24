@@ -579,27 +579,31 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - type: vertical-stack
-            cards:
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-chips-card
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-background: none;
-                          --chip-border-width: 0px;
-                          --chip-font-size: 16px;
-                          --chip-spacing: 10px
-                        }
-                    chips:
-                      - type: template
-                        tap_action:
-                          action: navigate
-                          navigation_path: /dashboard-playground/dashboard
-                        icon: mdi:menu
-                      - type: template
-                        content: Climate
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+                icon: mdi:chevron-left
+              - type: template
+                content: Climate
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-playground/dashboard
+            card_mod:
+              style: |
+                ha-card {
+                  --chip-background: none;
+                  --chip-border-width: 0px;
+                  --chip-font-size: 24px;
+                  --chip-icon-size: 50px;
+                  padding: 0px;
+                  margin-bottom: 40px;
+                  margin-top: 5px;
+                  margin-left: -20px;
+                  font-family: Poppins;
+                }
           - type: conditional
             conditions:
               - entity: input_boolean.summer_mode
@@ -616,7 +620,7 @@ views:
                     - 'off'
                 - type: target-temperature
               type: tile
-              entity: climate.office
+              entity: climate.bedroom
               vertical: true
               icon: mdi:air-conditioner
           - type: conditional
@@ -629,17 +633,23 @@ views:
                   hvac_modes:
                     - heat
                     - 'off'
-                - type: climate-preset-modes
-                  style: dropdown
-                  preset_modes:
-                    - none
-                    - away
                 - type: target-temperature
               type: tile
               entity: climate.bedroom_underfloor_heating
               icon: mdi:radiator
               vertical: true
               show_entity_picture: true
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.lumi_lumi_weather_temperature
+                layout: vertical
+                primary_info: none
+                icon_color: green
+              - type: custom:mushroom-entity-card
+                entity: sensor.lumi_lumi_weather_humidity
+                layout: vertical
+                primary_info: none
   - icon: mdi:lightbulb-group
     path: lights
     subview: true
@@ -835,15 +845,6 @@ views:
                         name: Upstairs
                         icon: phu:light-strip
                         show_state: true
-                        state:
-                          - operator: template
-                            value: >
-                              [[[ return
-                              states['light.upstairs_hallway_mood_led_strip'].state
-                              === 'on' ]]]
-                            styles:
-                              icon:
-                                - color: '#FF862E'
                         styles:
                           card:
                             - width: 140px
@@ -860,7 +861,13 @@ views:
                           img_cell:
                             - place-content: start
                           icon:
-                            - color: '#727C94'
+                            - color: |
+                                [[[ 
+                                  if (entity.state == 'on')
+                                    return "rgb(" + entity.attributes.rgb_color + ")";
+                                  else 
+                                    return "#727C94"
+                                ]]]
                             - width: 50px;
                             - height: 50px;
                           name:
@@ -931,15 +938,6 @@ views:
                         name: Kitchen Counter
                         icon: phu:light-strip
                         show_state: true
-                        state:
-                          - operator: template
-                            value: >
-                              [[[ return
-                              states['light.gledopto_gl_c_007p_277645fe_level_light_color_on_off'].state
-                              === 'on' ]]]
-                            styles:
-                              icon:
-                                - color: '#FF862E'
                         styles:
                           card:
                             - width: 140px
@@ -956,7 +954,13 @@ views:
                           img_cell:
                             - place-content: start
                           icon:
-                            - color: '#727C94'
+                            - color: |
+                                [[[ 
+                                  if (entity.state == 'on')
+                                    return "rgb(" + entity.attributes.rgb_color + ")";
+                                  else 
+                                    return "#727C94"
+                                ]]]
                             - width: 50px;
                             - height: 50px;
                           name:
@@ -984,15 +988,6 @@ views:
                             name: Living Mood
                             icon: phu:light-strip
                             show_state: true
-                            state:
-                              - operator: template
-                                value: >
-                                  [[[ return
-                                  states['light.rgb_mood_light_79d9e4a1_level_light_color_on_off'].state
-                                  === 'on' ]]]
-                                styles:
-                                  icon:
-                                    - color: '#FF862E'
                             styles:
                               card:
                                 - width: 140px
@@ -1009,7 +1004,13 @@ views:
                               img_cell:
                                 - place-content: start
                               icon:
-                                - color: '#727C94'
+                                - color: |
+                                    [[[ 
+                                      if (entity.state == 'on')
+                                        return "rgb(" + entity.attributes.rgb_color + ")";
+                                      else 
+                                        return "#727C94"
+                                    ]]]
                                 - width: 50px;
                                 - height: 50px;
                               name:
@@ -1128,15 +1129,6 @@ views:
                             name: Bed
                             icon: phu:light-strip
                             show_state: true
-                            state:
-                              - operator: template
-                                value: >
-                                  [[[ return
-                                  states['light.shellyrgbw2_e74768'].state ===
-                                  'on' ]]]
-                                styles:
-                                  icon:
-                                    - color: '#FF862E'
                             styles:
                               card:
                                 - width: 140px
@@ -1153,7 +1145,13 @@ views:
                               img_cell:
                                 - place-content: start
                               icon:
-                                - color: '#727C94'
+                                - color: |
+                                    [[[ 
+                                      if (entity.state == 'on')
+                                        return "rgb(" + entity.attributes.rgb_color + ")";
+                                      else 
+                                        return "#727C94"
+                                    ]]]
                                 - width: 50px;
                                 - height: 50px;
                               name:
