@@ -1,5 +1,7 @@
 # nspanel-pro-lovelace
 My custom NSPanel Pro Lovelace dashboard
+
+
 ![Screenshot 2023-10-24 at 08 49 52](https://github.com/trigger005/nspanel-pro-lovelace/assets/25452486/bc2e02d5-c1f0-4224-a672-7d8014c5df43)
 
 ![Screenshot 2023-10-24 at 08 50 03](https://github.com/trigger005/nspanel-pro-lovelace/assets/25452486/c5cb4689-ee5d-4939-9027-9e0df6396891)
